@@ -19,6 +19,8 @@ import { PokemonCard } from './pokemonCard'
         </>
       )
     }
+    return <div/>
+
    
   }
 

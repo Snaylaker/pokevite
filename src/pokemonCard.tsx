@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
 import ky from "ky"
-import { Pokemons } from "./pokemons"
 import { Pokemon } from "./pokemon"
 
 export function PokemonCard ({pokemonUrl} :{pokemonUrl:string}) {
@@ -23,5 +22,6 @@ export function PokemonCard ({pokemonUrl} :{pokemonUrl:string}) {
         
 
        }
+       return <div/>
    
 }
