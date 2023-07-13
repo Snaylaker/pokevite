@@ -12,11 +12,12 @@ import { PokemonCard } from './pokemonCard'
 
     if(pokemonsQuery.data){
       return  (
-        <>
-            {/* pokemonsQuery.data.results.map( pokemon => <PokemonCard pokemonUrl={pokemon.url}/>)*/
-               <PokemonCard pokemonUrl={pokemonsQuery.data.results[0].url}/>
-            }
-        </>
+        <main className='m-auto max-w-4xl p-4'>
+          <h1>Pokédex</h1>
+          <div className='flex justify-items-start flex-wrap'>
+          { pokemonsQuery.data.results.map( pokemon => <PokemonCard pokemonUrl={pokemon.url}/>)}
+          </div>
+        </main>
       )
     }
     return <div/>

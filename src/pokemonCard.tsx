@@ -9,16 +9,14 @@ export function PokemonCard ({pokemonUrl} :{pokemonUrl:string}) {
        })
 
        if(pokemonQuery.data){
-        return <div>
-             <h1 className="text-3xl font-bold underline bg-red">
-      Hello world!
-    </h1>
+        return <section>
             <div><img src={pokemonQuery.data.sprites.front_default}/></div>
+            #{pokemonQuery.data.order}
         <div>{pokemonQuery.data.name}</div>
-        {pokemonQuery.data.types.map(type =><div> {type.type.name}</div>)}
-        #{pokemonQuery.data.order}
+        {pokemonQuery.data.types.map(type =><a>  {type.type.name}</a>)}
+     
 
-        </div>
+        </section>
         
 
        }
