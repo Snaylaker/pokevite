@@ -1,0 +1,1 @@
+Add zod for typesafty
