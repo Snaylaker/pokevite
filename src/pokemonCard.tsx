@@ -10,7 +10,7 @@ export function PokemonCard({ pokemonUrl }: { pokemonUrl: string }) {
 
   if (pokemonQuery.data) {
     return (
-      <li className="border-solid border-2 border-red-500 rounded-lg">
+      <li className="rounded-lg border-2 border-solid border-red-500">
         <div>
           <img
             src={pokemonQuery.data.sprites.front_default}

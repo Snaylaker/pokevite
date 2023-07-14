@@ -24,7 +24,7 @@ function App() {
         <nav className="bg-red-200">
           <h1 className="my-5 text-5xl ">Pokédex</h1>
         </nav>
-        <div className=" mx-auto my-5 max-w-lg   ">
+        <div className=" mx-auto my-5 max-w-lg">
           <label htmlFor="pokemon-filter">Find a pokemon :</label>
           <input
             className="border-black"
