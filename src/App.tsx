@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
-import { Pokemons } from "../types/pokemons";
-import { Pokemon } from "../types/pokemon";
+import { Pokemons } from "./types/pokemons";
+import { Pokemon } from "./types/pokemon";
 import { useState } from "react";
 
 export default function App() {
@@ -19,14 +19,14 @@ export default function App() {
       pokemon.name.startsWith(pokemonName),
     );
     return (
-      <main className="bg- m-auto max-w-7xl rounded-lg border-2 border-solid border-red-500 p-4">
+      <main className=" m-auto max-w-7xl rounded-lg border-2 p-4">
         <nav className="my-3 bg-red-200">
           <h1 className="px-5 text-5xl ">Pokédex</h1>
         </nav>
         <div className=" mx-auto my-5 max-w-lg">
           <label htmlFor="pokemon-filter">Find a pokemon :</label>
           <input
-            className="border-black"
+            className="rounded border border-gray-300 px-2 py-2"
             type="search"
             id="site-search"
             name="pokemon input"
@@ -52,22 +52,16 @@ function PokemonCard({ pokemonUrl }: { pokemonUrl: string }) {
   });
 
   if (pokemonQuery.data) {
-    {
-      console.log(pokemonQuery.data.types[0].type.url);
-    }
-
     return (
-      <li className="rounded-lg border-2 border-solid border-red-500">
+      <li className="transform rounded-lg  border-2 border-solid shadow-md transition-transform hover:scale-110">
         <div>
           <img
-            className="bg-neutral-700 p-2"
+            className="h-40 w-40 bg-neutral-700 p-2"
             src={pokemonQuery.data.sprites.front_default}
-            width={150}
-            height={200}
           />
         </div>
 
-        <div className="bg-red-200 px-3">
+        <div className=" px-3">
           #{pokemonQuery.data.order}
           <div>{pokemonQuery.data.name}</div>
           {pokemonQuery.data.types.map((type) => (
@@ -128,7 +122,7 @@ const PokemonType = ({ type }: { type: string }) => {
 
   return (
     <span
-      className={`inline-block rounded-md px-2 py-1 text-sm font-medium ${typeColor} mr-1 my-1`}
+      className={`inline-block rounded-md px-2 py-1 text-sm font-medium ${typeColor} my-1 mr-1`}
     >
       {type}
     </span>
