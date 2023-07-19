@@ -106,36 +106,35 @@ function PokemonCard({
   const [isShinyVisible, setIsShinyVisible] = useState(false);
 
   if (pokemonQuery.data) {
+    return pokemonQuery.data.types.some(
+      (type) => type.type.name === selectedType,
+    ) ? (
+      <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
+        <div>
+          <img
+            className={`h-40 w-40 bg-none p-2 hover:animate-bounce `}
+            src={
+              isShinyVisible
+                ? pokemonQuery.data.sprites.front_shiny
+                : pokemonQuery.data.sprites.front_default
+            }
+            onClick={() => setIsShinyVisible(!isShinyVisible)}
+          />
+        </div>
 
-    return (
-      pokemonQuery.data.types.some(
-        (type) => type.type.name === selectedType,
-      ) && (
-        <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
-          <div>
-            <img
-              className={`h-40 w-40 bg-none p-2 hover:animate-bounce `}
-              src={
-                isShinyVisible
-                  ? pokemonQuery.data.sprites.front_shiny
-                  : pokemonQuery.data.sprites.front_default
-              }
-              onClick={() => setIsShinyVisible(!isShinyVisible)}
-            />
-          </div>
-
-          <div className="border px-3">
-            #{pokemonQuery.data.order}
-            <div className="text-lg font-medium">{pokemonQuery.data.name}</div>
-            {pokemonQuery.data.types.map((type) => (
-              <PokemonType key={type.slot} type={type.type.name} />
-            ))}
-          </div>
-        </li>
-      )
+        <div className="border px-3">
+          #{pokemonQuery.data.order}
+          <div className="text-lg font-medium">{pokemonQuery.data.name}</div>
+          {pokemonQuery.data.types.map((type) => (
+            <PokemonType key={type.slot} type={type.type.name} />
+          ))}
+        </div>
+      </li>
+    ) : (
+      <div></div>
     );
   }
-  return <div />;
+  return <div></div>
 }
 
 const PokemonType = ({ type }: { type: string }) => {
