@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { Pokemons } from "./types/pokemons";
 import { Pokemon } from "./types/pokemon";
+import PokeBallImg from "./assets/Pokeball.webp";
 import { ChangeEvent, useState } from "react";
 import { pokemonTypes } from "./types/pokemonType";
 
@@ -21,35 +22,11 @@ export default function App() {
         .json(),
   });
 
-  if (pokemonsQuery.isLoading) {
-    return (
-      <svg
-        className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        ></path>
-      </svg>
-    );
-  }
-
   if (pokemonsQuery.data) {
     return (
       <main className="m-auto max-w-7xl rounded-lg border-2 bg-gradient-to-r from-purple-500 to-pink-500 p-4">
-        <nav className="my-3 bg-red-200">
+        <nav className="my-3 flex bg-white ">
+          <img src={PokeBallImg} alt="pokeball image" className="h-20 w-20" />
           <h1 className="px-5 text-5xl ">Pokédex</h1>
         </nav>
         <div className="my-6 flex justify-center space-x-3">
@@ -108,7 +85,7 @@ function PokemonCard({
   if (pokemonQuery.data) {
     return pokemonQuery.data.types.some(
       (type) => type.type.name === selectedType,
-    ) ? (
+    ) || selectedType === "" ? (
       <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
         <div>
           <img
@@ -131,10 +108,10 @@ function PokemonCard({
         </div>
       </li>
     ) : (
-      <div></div>
+      <></>
     );
   }
-  return <div></div>
+  return <></>;
 }
 
 const PokemonType = ({ type }: { type: string }) => {
