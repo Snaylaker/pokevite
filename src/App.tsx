@@ -2,10 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { Pokemons } from "./types/pokemons";
 import { Pokemon } from "./types/pokemon";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { pokemonTypes } from "./types/pokemonType";
 
 export default function App() {
   const [pokemonName, setPokemonName] = useState("");
+  const [selectedType, setSelectedType] = useState("");
+
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(event.target.value);
+  };
+
   const pokemonsQuery = useQuery<Pokemons>({
     queryKey: ["pokemons"],
     queryFn: async () =>
@@ -14,38 +21,68 @@ export default function App() {
         .json(),
   });
 
+  if (pokemonsQuery.isLoading) {
+    return (
+      <svg
+        className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>
+    );
+  }
+
   if (pokemonsQuery.data) {
     return (
       <main className="m-auto max-w-7xl rounded-lg border-2 bg-gradient-to-r from-purple-500 to-pink-500 p-4">
         <nav className="my-3 bg-red-200">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="#2196F3"
-            className="h-6 w-6 text-blue-500"
-          >
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.74.46 3.43 1.32 4.9l1.43-1.43C4.53 14.21 4 13.15 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8c-1.15 0-2.21-.53-2.9-1.43l-1.43 1.43c1.47.86 3.16 1.32 4.9 1.32 5.52 0 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm0-4h-2V7h2v7z" />
-          </svg>
-
           <h1 className="px-5 text-5xl ">Pokédex</h1>
         </nav>
-        <div className=" mx-auto my-5 max-w-lg">
-          <label htmlFor="pokemon-filter">Find a pokemon :</label>
-          <input
-            className="rounded border border-gray-300 px-2 py-2"
-            type="search"
-            id="site-search"
-            name="pokemon input"
-            value={pokemonName}
-            onChange={(e) => setPokemonName(e.target.value)}
-          />
+        <div className="my-6 flex justify-center space-x-3">
+          <div>
+            <label htmlFor="pokemon-filter">Find a pokemon :</label>
+            <input
+              className="rounded border border-gray-300 px-2 py-2"
+              type="search"
+              id="site-search"
+              name="pokemon input"
+              value={pokemonName}
+              onChange={(e) => setPokemonName(e.target.value)}
+            />
+          </div>
+          <select value={selectedType} onChange={handleChange}>
+            {" "}
+            {pokemonTypes.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
         </div>
+
         <ul className="flex flex-wrap justify-center gap-4">
           {pokemonsQuery.data.results
             .filter((pokemon) => pokemon.name.startsWith(pokemonName))
             .map((pokemon) => (
-              <PokemonCard key={pokemon.name} pokemonUrl={pokemon.url} />
+              <PokemonCard
+                key={pokemon.name}
+                pokemonUrl={pokemon.url}
+                selectedType={selectedType}
+              />
             ))}
         </ul>
       </main>
@@ -54,30 +91,48 @@ export default function App() {
   return <div />;
 }
 
-function PokemonCard({ pokemonUrl }: { pokemonUrl: string }) {
+function PokemonCard({
+  pokemonUrl,
+  selectedType,
+}: {
+  pokemonUrl: string;
+  selectedType: string;
+}) {
   const pokemonQuery = useQuery({
     queryKey: [pokemonUrl],
     queryFn: async () => (await ky.get(pokemonUrl).json()) satisfies Pokemon,
   });
 
-  if (pokemonQuery.data) {
-    return (
-      <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
-        <div>
-          <img
-            className="  h-40 w-40 overflow-hidden  bg-none p-2 hover:animate-bounce"
-            src={pokemonQuery.data.sprites.front_default}
-          />
-        </div>
+  const [isShinyVisible, setIsShinyVisible] = useState(false);
 
-        <div className="border px-3">
-          #{pokemonQuery.data.order}
-          <div>{pokemonQuery.data.name}</div>
-          {pokemonQuery.data.types.map((type) => (
-            <PokemonType key={type.slot} type={type.type.name} />
-          ))}
-        </div>
-      </li>
+  if (pokemonQuery.data) {
+
+    return (
+      pokemonQuery.data.types.some(
+        (type) => type.type.name === selectedType,
+      ) && (
+        <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
+          <div>
+            <img
+              className={`h-40 w-40 bg-none p-2 hover:animate-bounce `}
+              src={
+                isShinyVisible
+                  ? pokemonQuery.data.sprites.front_shiny
+                  : pokemonQuery.data.sprites.front_default
+              }
+              onClick={() => setIsShinyVisible(!isShinyVisible)}
+            />
+          </div>
+
+          <div className="border px-3">
+            #{pokemonQuery.data.order}
+            <div className="text-lg font-medium">{pokemonQuery.data.name}</div>
+            {pokemonQuery.data.types.map((type) => (
+              <PokemonType key={type.slot} type={type.type.name} />
+            ))}
+          </div>
+        </li>
+      )
     );
   }
   return <div />;
