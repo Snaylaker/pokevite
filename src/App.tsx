@@ -6,9 +6,10 @@ import PokeBallImg from "./assets/Pokeball.webp";
 import { ChangeEvent, useState } from "react";
 import { pokemonTypes } from "./types/pokemonType";
 
+const AllTypes = "All"
 export default function App() {
   const [pokemonName, setPokemonName] = useState("");
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedType, setSelectedType] = useState(AllTypes);
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(event.target.value);
@@ -42,6 +43,7 @@ export default function App() {
             />
           </div>
           <select value={selectedType} onChange={handleChange}>
+            <option selected  value="All">All Types</option>
             {" "}
             {pokemonTypes.map((type) => (
               <option key={type} value={type}>
@@ -85,7 +87,7 @@ function PokemonCard({
   if (pokemonQuery.data) {
     return pokemonQuery.data.types.some(
       (type) => type.type.name === selectedType,
-    ) || selectedType === "" ? (
+    ) || selectedType === AllTypes? (
       <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
         <div>
           <img
