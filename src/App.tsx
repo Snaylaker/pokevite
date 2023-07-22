@@ -32,7 +32,8 @@ export default function App() {
         </nav>
         <div className="my-6 flex justify-center space-x-3">
           <div>
-            <label htmlFor="pokemon-filter">Find a pokemon :</label>
+            {" "}
+            <label htmlFor="pokemon-filter">Find a pokemon :</label>{" "}
             <input
               className="rounded border border-gray-300 px-2 py-2"
               type="search"
@@ -40,20 +41,21 @@ export default function App() {
               name="pokemon input"
               value={pokemonName}
               onChange={(e) => setPokemonName(e.target.value)}
-            />
-          </div>
+            />{" "}
+          </div>{" "}
           <select value={selectedType} onChange={handleChange}>
             <option selected  value="All">All Types</option>
             {" "}
             {pokemonTypes.map((type) => (
               <option key={type} value={type}>
-                {type}
+                {" "}
+                {type}{" "}
               </option>
-            ))}
-          </select>
-        </div>
-
+            ))}{" "}
+          </select>{" "}
+        </div>{" "}
         <ul className="flex flex-wrap justify-center gap-4">
+          {" "}
           {pokemonsQuery.data.results
             .filter((pokemon) => pokemon.name.startsWith(pokemonName))
             .map((pokemon) => (
