@@ -6,7 +6,7 @@ import PokeBallImg from "./assets/Pokeball.webp";
 import { ChangeEvent, useState } from "react";
 import { pokemonTypes } from "./types/pokemonType";
 
-const AllTypes = "All"
+const AllTypes = "All";
 export default function App() {
   const [pokemonName, setPokemonName] = useState("");
   const [selectedType, setSelectedType] = useState(AllTypes);
@@ -44,8 +44,9 @@ export default function App() {
             />{" "}
           </div>{" "}
           <select value={selectedType} onChange={handleChange}>
-            <option selected  value="All">All Types</option>
-            {" "}
+            <option selected value="All">
+              All Types
+            </option>{" "}
             {pokemonTypes.map((type) => (
               <option key={type} value={type}>
                 {" "}
@@ -83,24 +84,27 @@ function PokemonCard({
     queryKey: [pokemonUrl],
     queryFn: async () => (await ky.get(pokemonUrl).json()) satisfies Pokemon,
   });
-
   const [isShinyVisible, setIsShinyVisible] = useState(false);
 
   if (pokemonQuery.data) {
     return pokemonQuery.data.types.some(
       (type) => type.type.name === selectedType,
-    ) || selectedType === AllTypes? (
+    ) || selectedType === AllTypes ? (
       <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
         <div>
-          <img
-            className={`h-40 w-40 bg-none p-2 hover:animate-bounce `}
-            src={
-              isShinyVisible
-                ? pokemonQuery.data.sprites.front_shiny
-                : pokemonQuery.data.sprites.front_default
-            }
-            onClick={() => setIsShinyVisible(!isShinyVisible)}
-          />
+          {isShinyVisible ? (
+            <img
+              className={`h-40 w-40 bg-none p-2 hover:animate-bounce `}
+              src={pokemonQuery.data.sprites.front_shiny}
+              onClick={() => setIsShinyVisible(false)}
+            />
+          ) : (
+            <img
+              className={`h-40 w-40 bg-none p-2 hover:animate-bounce `}
+              src={pokemonQuery.data.sprites.front_default}
+              onClick={() => setIsShinyVisible(true)}
+            />
+          )}
         </div>
 
         <div className="border px-3">
