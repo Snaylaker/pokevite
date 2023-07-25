@@ -4,7 +4,7 @@ import { Pokemons } from "./types/pokemons";
 import { Pokemon } from "./types/pokemon";
 import PokeBallImg from "./assets/Pokeball.webp";
 import { ChangeEvent, useState } from "react";
-import { pokemonTypes } from "./types/pokemonType";
+import { PokemonType, isPokemonType, pokemonTypes } from "./types/pokemonType";
 
 const AllTypes = "All";
 export default function App() {
@@ -32,8 +32,7 @@ export default function App() {
         </nav>
         <div className="my-6 flex justify-center space-x-3">
           <div>
-            {" "}
-            <label htmlFor="pokemon-filter">Find a pokemon :</label>{" "}
+            <label htmlFor="pokemon-filter">Find a pokemon :</label>
             <input
               className="rounded border border-gray-300 px-2 py-2"
               type="search"
@@ -41,22 +40,22 @@ export default function App() {
               name="pokemon input"
               value={pokemonName}
               onChange={(e) => setPokemonName(e.target.value)}
-            />{" "}
-          </div>{" "}
+            />
+          </div>
+          <div> im trying out vim this feels so fucking cool mw</div>
           <select value={selectedType} onChange={handleChange}>
             <option selected value="All">
               All Types
-            </option>{" "}
+            </option>
             {pokemonTypes.map((type) => (
               <option key={type} value={type}>
-                {" "}
-                {type}{" "}
+                
+                {type}
               </option>
-            ))}{" "}
-          </select>{" "}
-        </div>{" "}
-        <ul className="flex flex-wrap justify-center gap-4">
-          {" "}
+            ))}
+          </select>
+        </div>
+        <ul className="flex flex-wrap justify-center gap-4">         
           {pokemonsQuery.data.results
             .filter((pokemon) => pokemon.name.startsWith(pokemonName))
             .map((pokemon) => (
@@ -86,7 +85,7 @@ function PokemonCard({
   });
   const [isShinyVisible, setIsShinyVisible] = useState(false);
 
-  if (pokemonQuery.data) {
+  if (pokemonQuery.data){
     return pokemonQuery.data.types.some(
       (type) => type.type.name === selectedType,
     ) || selectedType === AllTypes ? (
@@ -106,7 +105,6 @@ function PokemonCard({
             />
           )}
         </div>
-
         <div className="border px-3">
           #{pokemonQuery.data.order}
           <div className="text-lg font-medium">{pokemonQuery.data.name}</div>
@@ -123,17 +121,22 @@ function PokemonCard({
 }
 
 const PokemonType = ({ type }: { type: string }) => {
-  const typeColor = getTypeColor(type);
-  return (
-    <span
-      className={`inline-block rounded-md px-2 py-1 text-sm font-medium ${typeColor} my-1 mr-1`}
-    >
-      {type}
-    </span>
-  );
+  if(isPokemonType(type)){
+    const typeColor = getTypeColor(type);
+      return (
+        <span
+        className={`inline-block rounded-md px-2 py-1 text-sm font-medium ${typeColor} my-1 mr-1`}
+      >
+        {type}
+      </span>
+    );
+  }else{
+    return <div>unknown pokemon type</div>
+  }
+  
 };
 
-const getTypeColor = (type: string) => {
+const getTypeColor = (type:PokemonType ) => {
   switch (type) {
     case "normal":
       return "bg-gray-400 text-gray-900";

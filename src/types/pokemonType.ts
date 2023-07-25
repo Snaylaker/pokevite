@@ -1,24 +1,5 @@
-export type PokemonType =
-  | "normal"
-  | "fire"
-  | "water"
-  | "electric"
-  | "grass"
-  | "ice"
-  | "fighting"
-  | "poison"
-  | "ground"
-  | "flying"
-  | "psychic"
-  | "bug"
-  | "rock"
-  | "ghost"
-  | "dragon"
-  | "dark"
-  | "steel"
-  | "fairy";
-
-export const pokemonTypes: string[] = [
+export type PokemonType = (typeof pokemonTypes)[number];
+export const pokemonTypes = [
   "normal",
   "fire",
   "water",
@@ -38,3 +19,8 @@ export const pokemonTypes: string[] = [
   "steel",
   "fairy",
 ];
+
+export function isPokemonType(type: string): type is PokemonType {
+  return pokemonTypes.includes(type);
+}
+
