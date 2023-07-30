@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import ky from "ky";
-import { Pokemons } from "./types/pokemons";
-import { Pokemon } from "./types/pokemon";
-import PokeBallImg from "./assets/Pokeball.webp";
 import { ChangeEvent, useState } from "react";
+import PokeBallImg from "./assets/Pokeball.webp";
+import { Pokemon } from "./types/pokemon";
 import { PokemonType, isPokemonType, pokemonTypes } from "./types/pokemonType";
+import { Pokemons } from "./types/pokemons";
 
 const AllTypes = "All";
 export default function App() {
@@ -25,7 +25,7 @@ export default function App() {
 
   if (pokemonsQuery.data) {
     return (
-      <main className="m-auto max-w-7xl rounded-lg border-2 bg-gradient-to-r from-purple-500 to-pink-500 p-4">
+      <main className="max-w-7x m-auto rounded-lg border-2 bg-gradient-to-r from-purple-500 to-pink-500 p-4">
         <nav className="my-3 flex bg-white ">
           <img src={PokeBallImg} alt="pokeball image" className="h-20 w-20" />
           <h1 className="px-5 text-5xl ">Pokédex</h1>
@@ -49,13 +49,12 @@ export default function App() {
             </option>
             {pokemonTypes.map((type) => (
               <option key={type} value={type}>
-                
                 {type}
               </option>
             ))}
           </select>
         </div>
-        <ul className="flex flex-wrap justify-center gap-4">         
+        <ul className="flex flex-wrap justify-center gap-4">
           {pokemonsQuery.data.results
             .filter((pokemon) => pokemon.name.startsWith(pokemonName))
             .map((pokemon) => (
@@ -85,8 +84,8 @@ function PokemonCard({
   });
   const [isShinyVisible, setIsShinyVisible] = useState(false);
 
-  if (pokemonQuery.data){
-    return pokemonQuery.data.types.some(
+  if (pokemonQuery.data) {
+    return pokemonQuery.data.types.some(  
       (type) => type.type.name === selectedType,
     ) || selectedType === AllTypes ? (
       <li className="rounded-lg border-2 border-solid shadow-md  transition-transform hover:scale-105">
@@ -121,22 +120,21 @@ function PokemonCard({
 }
 
 const PokemonType = ({ type }: { type: string }) => {
-  if(isPokemonType(type)){
+  if (isPokemonType(type)) {
     const typeColor = getTypeColor(type);
-      return (
-        <span
+    return (
+      <span
         className={`inline-block rounded-md px-2 py-1 text-sm font-medium ${typeColor} my-1 mr-1`}
       >
         {type}
       </span>
     );
-  }else{
-    return <div>unknown pokemon type</div>
+  } else {
+    return <div>unknown pokemon type</div>;
   }
-  
 };
 
-const getTypeColor = (type:PokemonType ) => {
+const getTypeColor = (type: PokemonType) => {
   switch (type) {
     case "normal":
       return "bg-gray-400 text-gray-900";

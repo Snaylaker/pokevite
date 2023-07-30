@@ -10,6 +10,7 @@ export const pokemonTypes = [
   "poison",
   "ground",
   "flying",
+
   "psychic",
   "bug",
   "rock",
