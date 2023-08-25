@@ -10,7 +10,6 @@ const AllTypes = "All";
 export default function App() {
   const [pokemonName, setPokemonName] = useState("");
   const [selectedType, setSelectedType] = useState(AllTypes);
-
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(event.target.value);
   };
@@ -42,7 +41,6 @@ export default function App() {
               onChange={(e) => setPokemonName(e.target.value)}
             />
           </div>
-          <div> im trying out vim this feels so fucking cool mw</div>
           <select value={selectedType} onChange={handleChange}>
             <option selected value="All">
               All Types
