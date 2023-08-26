@@ -21,10 +21,9 @@ export default function App() {
         .get("https://pokeapi.co/api/v2/pokemon/?limit=150&offset=0")
         .json(),
   });
-
   if (pokemonsQuery.data) {
     return (
-      <main className="max-w-7x m-auto rounded-lg border-2 bg-gradient-to-r from-purple-500 to-pink-500 p-4">
+      <main className="maxll-w-7x m-auto rounded-lg border-2 bg-gradient-to-r from-purple-500 to-pink-500 p-4">
         <nav className="my-3 flex bg-white ">
           <img src={PokeBallImg} alt="pokeball image" className="h-20 w-20" />
           <h1 className="px-5 text-5xl ">Pokédex</h1>
